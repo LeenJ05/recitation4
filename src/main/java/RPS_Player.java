@@ -5,13 +5,17 @@ public class RPS_Player {
     private int numberOfGamesPlayed;
     private int choice;
     private String name;
+    private Random random;
 
     public RPS_Player(String name){
-        // TODO: replace this line with your code.
+        this.name = name;
+        this.random = new Random();
+        clear();
+
     }
 
     public String getName(){
-        // TODO: replace this line with your code.
+        return name;
     }
 
     /**
@@ -19,7 +23,7 @@ public class RPS_Player {
      * @return returns the number of games played.
      */
     public int getNumberOfGamesPlayed(){
-        // TODO: replace this line with your code.
+        return numberOfGamesPlayed;
     }
 
     /**
@@ -27,7 +31,7 @@ public class RPS_Player {
      * @return returns the number of games won.
      */
     public int getNumberOfGamesWon(){
-        // TODO: replace this line with your code.
+        return numberOfGamesWon;
     }
 
     /**
@@ -35,14 +39,19 @@ public class RPS_Player {
      * @return win percentage as a double.
      */
     public double getWinPercentage(){
-        // TODO: replace this line with your code.
+        if (numberOfGamesPlayed == 0) {
+            return 0.0;
+        }
+        return (double) numberOfGamesWon / numberOfGamesPlayed;
     }
 
     /**
      * Starts a new game.
      */
     public void clear(){
-        // TODO: replace this line with your code.
+        numberOfGamesPlayed = 0;
+        numberOfGamesWon = 0;
+        choice = -1;
     }
 
     /**
@@ -53,7 +62,18 @@ public class RPS_Player {
      * @return Reference to the RPS_Player that won or a null if there is a draw
      */
     public RPS_Player challenge(RPS_Player anotherPlayer){
-        // TODO: replace this line with your code.
+        choice = random.nextInt(3);
+        int anotherChoice = random.nextInt(3);
+
+        if (this.choice == anotherChoice) {
+            return null;
+        } else if ((this.choice == 0 && anotherChoice == 2) || (this.choice == 1 && anotherChoice == 0) || (this.choice == 2 && anotherChoice == 1)) {
+            this.numberOfGamesWon++;
+            return this;
+        } else {
+            anotherPlayer.numberOfGamesWon++;
+            return anotherPlayer;
+        }
     }
 
     /**
@@ -63,8 +83,22 @@ public class RPS_Player {
      * @param anotherPlayer an RPS_Player that this player is challenging.
      * @return Reference to the RPS_Player that won or a null if there is a draw
      */
-    public RPS_Player keepAndChallenge(RPS_Player anotherPlayer){
-        // TODO: replace this line with your code.
-    }
+    public RPS_Player keepAndChallenge(RPS_Player anotherPlayer) {
+        if (choice == -1) {
+            choice = random.nextInt(3);
+        }
+        int anotherChoice = random.nextInt(3);
+        if (this.choice == anotherChoice) {
+            return null; // draw
+        } else if ((this.choice == 0 && anotherChoice == 2) ||
+                (this.choice == 1 && anotherChoice == 0) ||
+                (this.choice == 2 && anotherChoice == 1)) {
+            this.numberOfGamesWon++;
+            return this;
+        } else {
+            anotherPlayer.numberOfGamesWon++;
+            return anotherPlayer;
+        }
 
+    }
 }
